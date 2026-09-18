@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form>
+      <h1>Login Form</h1>
+      <label>UserName:</label>
+      <input type="text" name="uname" id="v1" /><br /><br />
+      <label>Password:</label>
+      <input type="password" name="upwd" id="v2" /><br /><br />
+      <button onclick="Login()" type="button">Login</button>
+      <p id="result"></p>
+    </form>,l
+    <script>
+      function Login() {
+        let uname = document.getElementById('v1').value;
+        let upwd = document.getElementById('v2').value;
+        if (uname == 'burhan' && upwd == 123) {
+          document.getElementById('result').innerHTML = 'Login Successfully!!';
+        } else {
+          document.getElementById('result').innerHTML = 'Login Failed';
+        }
+      }
+    </script>
+  </body>
+</html>
