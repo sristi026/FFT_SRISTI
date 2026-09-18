@@ -1,0 +1,8 @@
+<label>Department</label>
+                <select>
+                    <option></option>
+                    <option>Applied Engineering</option>
+                    <option>Management</option>
+                    <option>Law</option>
+                    <option>Engineering</option>
+                </select>

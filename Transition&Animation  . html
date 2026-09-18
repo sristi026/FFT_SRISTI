@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transitions&Animations</title>
+    <style>
+        button{
+            margin-left: 800px;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            border: none;
+            background-color:aqua;
+            border: none;
+            transition: 2s ease-in-out;
+        }
+         
+        button:hover{
+            background-color: greenyellow;
+            transform: scale(1.5);
+        }
+
+        .box{
+            width: 100px;
+            height:100px;
+            background: yellow;
+           /* animation-name: swagat;
+            animation-delay: 2s;
+            animation-timing-function: ease;
+            animation-duration: 2s;
+            animation-iteration-count: infinite; */
+            animation: swagat 2s alternate infinite;
+        }
+
+        @keyframes swagat {
+            to {
+                transform: scale(0);    
+            }
+            from {
+                transform: scale(300px);
+            }
+        }
+
+        .load{
+            margin-left: 200px;
+            width: 100px;
+            height: 100px;
+            border: 5px solid black;
+            border-radius: 50%;
+            border-top: 5px solid green;
+            animation: spin 2s 2s infinite;
+        }
+
+          @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .triangle{
+            margin-left: 300px;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 100px solid green;
+            animation: spin 2s 2s infinite;
+        }
+
+          @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rectangle{
+            margin-left: 500px;
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            animation: spin 2s 2s infinite;
+        }
+
+          @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Transitions & Animations</h1>
+    <button>Action</button>
+    <button>Submit</button>
+    <div class="box"></div>
+    <div class="load"></div>
+    <div class="triangle"></div>
+    <div class="rectangle"></div>
+    <div class="rectangle"></div>
+</body>
+</html>
