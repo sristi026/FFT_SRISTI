@@ -1,30 +1,55 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <form>
-      <h1>Login Form</h1>
-      <label>UserName:</label>
-      <input type="text" name="uname" id="v1" /><br /><br />
-      <label>Password:</label>
-      <input type="password" name="upwd" id="v2" /><br /><br />
-      <button onclick="Login()" type="button">Login</button>
-      <p id="result"></p>
-    </form>,l
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Methods</title>
+</head>
+
+<body>
+
+    <h2 id="heading">Hello World</h2>
+
+    <p name="para">Paragraph 1</p>
+    <p name="para">Paragraph 2</p>
+
+    <p class="text">Class 1</p>
+    <p class="text">Class 2</p>
+
+    <div>Div 1</div>
+    <div>Div 2</div>
+
+
     <script>
-      function Login() {
-        let uname = document.getElementById('v1').value;
-        let upwd = document.getElementById('v2').value;
-        if (uname == 'burhan' && upwd == 123) {
-          document.getElementById('result').innerHTML = 'Login Successfully!!';
-        } else {
-          document.getElementById('result').innerHTML = 'Login Failed';
-        }
-      }
+        // 1. document.write()
+        document.write("Hello from document.write()<br>");
+
+        // 2. document.writeln()
+        document.writeln("Hello from document.writeln()<br>");
+
+        // 3. getElementById()
+        document.getElementById("heading").innerHTML =
+            "Changed by ID";
+
+        // 4. getElementsByName()
+        document.getElementsByName("para")[1].innerHTML =
+            "Changed by Name";
+
+        // 5. getElementsByClassName()
+        document.getElementsByClassName("text")[1].innerHTML =
+            "Changed by Class";
+
+        // 6. getElementsByTagName()
+        document.getElementsByTagName("div")[0].innerHTML =
+            "Changed by Tag";
+
+        // 7. querySelector()
+        document.querySelector(".text").style.color =
+            "red";
+
+        // 8. querySelectorAll()
+        document.querySelectorAll(".text")[1].style.color =
+            "blue";
+
     </script>
-  </body>
+
+</body>
 </html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Result Dashboard</title>
+<style>
+body {
+  font-family: Arial;
+  background: #eef2f3;
+  margin: 0;
+  padding: 15px;
+}
+h1 {
+  text-align: center;
+}
+.card {
+  background: white;
+  width: 80%;
+  margin: 15px auto;
+  padding: 15px;
+  border: 1px solid gray;
+}
+input, select {
+  padding: 6px;
+  margin: 4px;
+}
+button {
+  padding: 7px 15px;
+  background: blue;
+  color: white;
+  border: none;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid black;
+  padding: 6px;
+  text-align: center;
+}
+th {
+  background: lightgray;
+}
+.pass {
+  color: green;
+}
+.fail {
+  color: red;
+}
+</style>
+</head>
+<body>
+
+<h1>Student Result Dashboard</h1>
+
+<div class="card">
+  <h3>Student Details</h3>
+  Name: <input type="text" id="name"><br>
+  Reg No: <input type="text" id="regno"><br>
+  <h3>Enter Marks (out of 100)</h3>
+  Maths: <input type="number" id="m1" style="width:60px">
+  Physics: <input type="number" id="m2" style="width:60px">
+  Chemistry: <input type="number" id="m3" style="width:60px">
+  English: <input type="number" id="m4" style="width:60px">
+  Computer: <input type="number" id="m5" style="width:60px">
+  <br><br>
+  <button onclick="calculate()">Calculate</button>
+  <button onclick="clearAll()">Clear</button>
+  <p id="msg" class="fail"></p>
+</div>
+
+<div class="card" id="resultCard" style="display:none">
+  <h3>Result</h3>
+  <p>Name : <b id="rname"></b></p>
+  <p>Reg No : <b id="rreg"></b></p>
+  <p>Total : <b id="rtotal"></b> / 500</p>
+  <p>Average : <b id="ravg"></b></p>
+  <p>Percentage : <b id="rper"></b> %</p>
+  <p>Grade : <b id="rgrade"></b></p>
+  <p>Result : <b id="rstatus"></b></p>
+</div>
+
+<div class="card">
+  <h3>Performance Summary</h3>
+  <p>Total Students : <span id="s1">0</span></p>
+  <p>Passed : <span id="s2">0</span></p>
+  <p>Failed : <span id="s3">0</span></p>
+  <p>Class Average : <span id="s4">0</span> %</p>
+  <p>Topper : <span id="s5">-</span></p>
+</div>
+
+<div class="card">
+  <h3>Student List</h3>
+  Search: <input type="text" id="search" onkeyup="showList()" placeholder="name or reg no">
+  Filter:
+  <select id="filter" onchange="showList()">
+    <option value="all">All</option>
+    <option value="Pass">Pass</option>
+    <option value="Fail">Fail</option>
+  </select>
+  <br><br>
+  <table>
+    <tr>
+      <th>Reg No</th>
+      <th>Name</th>
+      <th>Maths</th>
+      <th>Physics</th>
+      <th>Chemistry</th>
+      <th>English</th>
+      <th>Computer</th>
+      <th>Total</th>
+      <th>Avg</th>
+      <th>%</th>
+      <th>Grade</th>
+      <th>Result</th>
+    </tr>
+    <tbody id="list"></tbody>
+  </table>
+</div>
+
+<script>
+var students = [];
+
+function calculate() {
+  var name = document.getElementById("name").value;
+  var regno = document.getElementById("regno").value;
+  var marks = [];
+  for (var i = 1; i <= 5; i++) {
+    marks.push(document.getElementById("m" + i).value);
+  }
+
+  var msg = document.getElementById("msg");
+  msg.innerHTML = "";
+
+  if (name == "" || regno == "") {
+    msg.innerHTML = "Enter name and reg no";
+    return;
+  }
+
+  for (var i = 0; i < 5; i++) {
+    if (marks[i] == "" || marks[i] < 0 || marks[i] > 100) {
+      msg.innerHTML = "Marks should be between 0 and 100";
+      return;
+    }
+    marks[i] = Number(marks[i]);
+  }
+
+  for (var i = 0; i < students.length; i++) {
+    if (students[i].regno == regno) {
+      msg.innerHTML = "This reg no is already added";
+      return;
+    }
+  }
+
+  var total = 0;
+  var result = "Pass";
+  for (var i = 0; i < 5; i++) {
+    total = total + marks[i];
+    if (marks[i] < 40) {
+      result = "Fail";
+    }
+  }
+
+  var avg = total / 5;
+  var per = total / 500 * 100;
+
+  var grade;
+  if (result == "Fail") {
+    grade = "F";
+  } else if (per >= 90) {
+    grade = "O";
+  } else if (per >= 80) {
+    grade = "A";
+  } else if (per >= 70) {
+    grade = "B";
+  } else if (per >= 60) {
+    grade = "C";
+  } else {
+    grade = "D";
+  }
+
+  document.getElementById("rname").innerHTML = name;
+  document.getElementById("rreg").innerHTML = regno;
+  document.getElementById("rtotal").innerHTML = total;
+  document.getElementById("ravg").innerHTML = avg.toFixed(2);
+  document.getElementById("rper").innerHTML = per.toFixed(2);
+  document.getElementById("rgrade").innerHTML = grade;
+  var rs = document.getElementById("rstatus");
+  rs.innerHTML = result;
+  rs.className = result.toLowerCase();
+  document.getElementById("resultCard").style.display = "block";
+
+  var s = {
+    name: name,
+    regno: regno,
+    marks: marks,
+    total: total,
+    avg: avg.toFixed(2),
+    per: per.toFixed(2),
+    grade: grade,
+    result: result
+  };
+  students.push(s);
+
+  showList();
+  showSummary();
+}
+
+function showList() {
+  var text = document.getElementById("search").value.toLowerCase();
+  var filter = document.getElementById("filter").value;
+  var rows = "";
+
+  for (var i = 0; i < students.length; i++) {
+    var s = students[i];
+    var found = s.name.toLowerCase().indexOf(text) >= 0 || s.regno.toLowerCase().indexOf(text) >= 0;
+
+    if (found && (filter == "all" || filter == s.result)) {
+      rows = rows + "<tr>";
+      rows = rows + "<td>" + s.regno + "</td>";
+      rows = rows + "<td>" + s.name + "</td>";
+      for (var j = 0; j < 5; j++) {
+        rows = rows + "<td>" + s.marks[j] + "</td>";
+      }
+      rows = rows + "<td>" + s.total + "</td>";
+      rows = rows + "<td>" + s.avg + "</td>";
+      rows = rows + "<td>" + s.per + "</td>";
+      rows = rows + "<td>" + s.grade + "</td>";
+      rows = rows + "<td class='" + s.result.toLowerCase() + "'>" + s.result + "</td>";
+      rows = rows + "</tr>";
+    }
+  }
+  document.getElementById("list").innerHTML = rows;
+}
+
+function showSummary() {
+  var pass = 0;
+  var fail = 0;
+  var sum = 0;
+  var top = students[0];
+
+  for (var i = 0; i < students.length; i++) {
+    if (students[i].result == "Pass") {
+      pass++;
+    } else {
+      fail++;
+    }
+    sum = sum + Number(students[i].per);
+    if (students[i].total > top.total) {
+      top = students[i];
+    }
+  }
+
+  document.getElementById("s1").innerHTML = students.length;
+  document.getElementById("s2").innerHTML = pass;
+  document.getElementById("s3").innerHTML = fail;
+  document.getElementById("s4").innerHTML = (sum / students.length).toFixed(2);
+  document.getElementById("s5").innerHTML = top.name + " (" + top.total + ")";
+}
+
+function clearAll() {
+  document.getElementById("name").value = "";
+  document.getElementById("regno").value = "";
+  for (var i = 1; i <= 5; i++) {
+    document.getElementById("m" + i).value = "";
+  }
+  document.getElementById("msg").innerHTML = "";
+  document.getElementById("resultCard").style.display = "none";
+}
+</script>
+</body>
+</html>
